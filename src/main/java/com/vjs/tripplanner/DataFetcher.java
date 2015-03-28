@@ -2,6 +2,7 @@ package com.vjs.tripplanner;
 
 import se.walkercrou.places.*;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
@@ -24,18 +25,28 @@ public class DataFetcher {
         }
     }
 
-    public void testReq() {
-        List<Place> places = client.getPlacesByRadar(TEST_PLACE_LAT, TEST_PLACE_LNG, 400.0, GooglePlaces.MAXIMUM_RESULTS, Param.name("types").value("food%7Ccafe"));
+    public List<Place> radarSearch(double lat, double lng, double radius, int count, String typeStr) {
+        List<Place> detailedPlaces = new ArrayList<Place>();
+
+        List<Place> places = client.getPlacesByRadar(lat, lng, radius, count, Param.name("types").value(typeStr));
 
         for(Place place : places) {
-            System.out.println(place.getPlaceId());
+            detailedPlaces.add(place.getDetails());
         }
+
+        return detailedPlaces;
     }
 
-    public static void main(String arg[]) {
-        DataFetcher fetcher = new DataFetcher();
+    public List<Place> radarSearch(double lat, double lng, double radius, String typeStr) {
+        List<Place> detailedPlaces = new ArrayList<Place>();
 
-        fetcher.testReq();
+        List<Place> places = client.getPlacesByRadar(lat, lng, radius, Param.name("types").value(typeStr));
+
+        for(Place place : places) {
+            detailedPlaces.add(place.getDetails());
+        }
+
+        return detailedPlaces;
     }
 
 }
