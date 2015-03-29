@@ -1,6 +1,6 @@
 package com.vjs.tripplanner;
 
-import se.walkercrou.places.*;
+import com.vjs.googleplaceswrapper.*;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,28 +25,9 @@ public class DataFetcher {
         }
     }
 
-    public List<Place> radarSearch(double lat, double lng, double radius, int count, String typeStr) {
-        List<Place> detailedPlaces = new ArrayList<Place>();
-
-        List<Place> places = client.getPlacesByRadar(lat, lng, radius, count, Param.name("types").value(typeStr));
-
-        for(Place place : places) {
-            detailedPlaces.add(place.getDetails());
-        }
-
-        return detailedPlaces;
-    }
-
     public List<Place> radarSearch(double lat, double lng, double radius, String typeStr) {
-        List<Place> detailedPlaces = new ArrayList<Place>();
-
         List<Place> places = client.getPlacesByRadar(lat, lng, radius, Param.name("types").value(typeStr));
 
-        for(Place place : places) {
-            detailedPlaces.add(place.getDetails());
-        }
-
-        return detailedPlaces;
+        return places;
     }
-
 }
